@@ -8,6 +8,7 @@ fast_model is a standalone Django application designed to keep common database m
 
 ## Project Structure
 
+```
 fast_model/
 ├── fast_model/
 │   ├── __init__.py
@@ -15,42 +16,45 @@ fast_model/
 │   └── apps.py
 ├── pyproject.toml
 └── README.md
-
+```
 ## Installation
 
 Public repository:
+```
 pip install git+https://github.com/your-username/fast_model.git
-
+```
 Private repository (SSH):
+```
 pip install git+ssh://git@github.com/your-username/fast_model.git
-
+```
 Install a specific version:
+```
 pip install git+https://github.com/your-username/fast_model.git@v1.0.0
-
+```
 ## Django Configuration
 
 Add the app to INSTALLED_APPS:
-
+```
 INSTALLED_APPS = [
     ...
     'fast_model',
 ]
-
+```
 ## AppConfig
 
 fast_model/apps.py:
-
+```
 from django.apps import AppConfig
 
 class FastModelConfig(AppConfig):
     name = 'fast_model'
-
+```
 ## Defining Models
 
 All shared models must be defined in fast_model/models.py
 
 Example:
-
+```
 from django.db import models
 
 class Product(models.Model):
@@ -60,37 +64,37 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
+```
 ## Using Models
 
 Import models in any Django project:
-
+```
 from fast_model.models import Product
-
+```
 ## Database Migrations
 
 Migrations must be created and applied inside each Django project:
-
+```
 python manage.py makemigrations fast_model
 python manage.py migrate
-
+```
 ## Updating
 
 Update the package:
-
+```
 pip install --upgrade git+https://github.com/your-username/fast_model.git
-
+```
 ## Versioning
 
 Create a version tag:
-
+```
 git tag v1.0.0
 git push origin v1.0.0
-
+```
 Install a specific version:
-
+```
 pip install git+https://github.com/your-username/fast_model.git@v1.0.0
-
+```
 ## Notes
 
 - Do not run migrations inside the fast_model repository
