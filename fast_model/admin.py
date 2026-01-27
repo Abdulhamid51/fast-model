@@ -1,13 +1,5 @@
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from fast_model.authen.models import Currency, Measure, Company, CustomUser
-from fast_model.warehouse.models import (
-    ProductCategory, BaseProduct, Warehouse, ProductLocation, 
-    ProductCharacter1, ProductCharacter2, ProductCharacter3, 
-    Product, BatchNumber, ProductHistory
-)
-from fast_model.finance.models import BaseCash, Cash, PersonAccount, Conversion, Payment
-from fast_model.sale.models import ShoppingStatus, Shopping, ShoppingItem
+from fast_model.import_libs import *
+from fast_model.models import *
 
 # --- Authen ---
 @admin.register(Currency)

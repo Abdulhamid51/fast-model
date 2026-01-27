@@ -7,12 +7,14 @@ from django.db.models import Sum, Avg, Max, Min, StdDev, Variance
 from django.db.models.functions import Round, Floor, Ceil, Abs, Power, Sqrt
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 __all__ = [
     'models', 'User', 'math', 'decimal', 'np', 
     'Sum', 'Avg', 'Max', 'Min', 'StdDev', 'Variance',
     'Round', 'Floor', 'Ceil', 'Abs', 'Power', 'Sqrt',
-    '_', 'timezone', 'BaseModel'
+    '_', 'timezone', 'BaseModel', 'admin', 'UserAdmin'
 ]
 
 class BaseModel(models.Model):
