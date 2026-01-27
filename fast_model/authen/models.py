@@ -33,7 +33,6 @@ class Company(BaseModel):
     """
     Only Developer can add company!!!
     """
-    # Company modelida company field clash bermasligi uchun uni o'chiramiz yoki related_name beramiz
     company = None 
     
     name = models.CharField(max_length=100)
@@ -53,12 +52,11 @@ class Company(BaseModel):
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")
 
-class CustomUser(AbstractUser, BaseModel):
+class CustomUser(BaseModel):
     """
-    When you want to use user, you should use this model.
-    User types:
-    super_admin, admin, customer, deliver, partner
+    Profile model for standard Django User.
     """
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="custom")
     USER_TYPE_CHOICES = (
         ("super_admin", _("Super Admin")),
         ("admin", _("Admin")),
@@ -76,8 +74,8 @@ class CustomUser(AbstractUser, BaseModel):
     latitude = models.FloatField(blank=True, null=True)
     
     def __str__(self):
-        return self.username
+        return self.user.username
 
     class Meta:
-        verbose_name = _("User")
-        verbose_name_plural = _("Users")
+        verbose_name = _("Custom User")
+        verbose_name_plural = _("Custom Users")

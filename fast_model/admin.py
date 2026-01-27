@@ -20,16 +20,38 @@ class CompanyAdmin(admin.ModelAdmin):
     list_filter = ('is_active',)
     search_fields = ('name',)
 
+class CustomUserInline(admin.StackedInline):
+    model = CustomUser
+    can_delete = False
+    verbose_name_plural = 'Custom User Info'
+
+# Standart UserAdmin ni kengaytirish
+class MyUserAdmin(UserAdmin):
+    inlines = (CustomUserInline,)
+    list_display = UserAdmin.list_display + ('get_user_type', 'get_company')
+    
+    def get_user_type(self, obj):
+        return obj.custom.user_type if hasattr(obj, 'custom') else '-'
+    get_user_type.short_description = 'User Type'
+
+    def get_company(self, obj):
+        return obj.custom.company if hasattr(obj, 'custom') else '-'
+    get_company.short_description = 'Company'
+
+# CustomUser ni alohida ham ko'rish imkoniyati
 @admin.register(CustomUser)
-class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'user_type', 'company', 'is_staff', 'is_active')
-    list_filter = ('user_type', 'company', 'is_staff', 'is_active')
-    fieldsets = UserAdmin.fieldsets + (
-        (_('Custom Fields'), {'fields': ('user_type', 'company')}),
-    )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (_('Custom Fields'), {'fields': ('user_type', 'company')}),
-    )
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ('get_username', 'user_type', 'company', 'is_active')
+    list_filter = ('user_type', 'company', 'is_active')
+    search_fields = ('user__username', 'user__email')
+
+    def get_username(self, obj):
+        return obj.user.username
+    get_username.short_description = 'Username'
+
+# Standart UserAdmin ni qayta ro'yxatdan o'tkazish (agar kerak bo'lsa asosiy loyihada qilinadi)
+# admin.site.unregister(User)
+# admin.site.register(User, MyUserAdmin)
 
 # --- Warehouse ---
 @admin.register(ProductCategory)
