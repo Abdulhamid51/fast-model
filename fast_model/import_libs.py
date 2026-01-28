@@ -9,12 +9,15 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.core.exceptions import PermissionDenied
+from django.db import transaction
+
 
 __all__ = [
     'models', 'User', 'AbstractUser', 'math', 'decimal', 'np', 
     'Sum', 'Avg', 'Max', 'Min', 'StdDev', 'Variance',
     'Round', 'Floor', 'Ceil', 'Abs', 'Power', 'Sqrt',
-    '_', 'timezone', 'BaseModel', 'admin', 'UserAdmin'
+    '_', 'timezone', 'BaseModel', 'admin', 'UserAdmin', 'PermissionDenied'
 ]
 
 class BaseModel(models.Model):

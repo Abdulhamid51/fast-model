@@ -1,5 +1,17 @@
 from fast_model.import_libs import *
 
+class CurrencyValue(BaseModel):
+    currency = models.ForeignKey('fast_model.Currency', on_delete=models.CASCADE)
+    currency_value = models.FloatField(default=0)
+    custom_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.currency.name} = {self.currency_value}"
+
+    class Meta:
+        verbose_name = _("Currency Value")
+        verbose_name_plural = _("Currency Values")
+
 class BaseCash(BaseModel):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
@@ -49,11 +61,51 @@ class Conversion(BaseModel):
     class Meta:
         verbose_name = _("Conversion")
         verbose_name_plural = _("Conversions")
-    
+
+class BasePaymentSource(BaseModel):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Base Payment Source")
+        verbose_name_plural = _("Base Payment Sources")
+
+class PaymentSource(BaseModel):
+    base = models.ForeignKey('fast_model.BasePaymentSource', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    SOURCE_TYPE_CHOICES = (
+        ("in", _("In")),
+        ("out", _("Out")),
+    )
+    source_type = models.CharField(max_length=10, choices=SOURCE_TYPE_CHOICES, default="in")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Payment Source")
+        verbose_name_plural = _("Payment Sources")
+
+class PaymentMethod(BaseModel):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Payment Method")
+        verbose_name_plural = _("Payment Methods")
 
 class Payment(BaseModel):
     custom_date = models.DateTimeField(default=timezone.now)
     cash = models.ForeignKey('fast_model.Cash', on_delete=models.CASCADE, blank=True, null=True)
+    payment_source = models.ForeignKey('fast_model.PaymentSource', on_delete=models.CASCADE, blank=True, null=True)
+    payment_method = models.ForeignKey('fast_model.PaymentMethod', on_delete=models.CASCADE, blank=True, null=True)
     currency = models.ForeignKey('fast_model.Currency', on_delete=models.CASCADE)
     currency_value = models.FloatField(default=0)
     conversion = models.ForeignKey('fast_model.Conversion', on_delete=models.CASCADE, blank=True, null=True)
@@ -61,7 +113,7 @@ class Payment(BaseModel):
     cash_new = models.FloatField(default=0)
     shopping_paid = models.ForeignKey('fast_model.Shopping', on_delete=models.CASCADE, related_name="shopping_paid", blank=True, null=True)
     shopping_value = models.OneToOneField('fast_model.Shopping', on_delete=models.CASCADE, related_name="shopping_value", blank=True, null=True)
-    person = models.ForeignKey('fast_model.CustomUser', on_delete=models.CASCADE, related_name="payments_person", blank=True, null=True)
+    person_account = models.ForeignKey('fast_model.PersonAccount', on_delete=models.CASCADE, related_name="payments_person", blank=True, null=True)
     person_old = models.FloatField(default=0)
     person_new = models.FloatField(default=0)
     responsible_employee = models.ForeignKey('fast_model.CustomUser', on_delete=models.CASCADE, related_name="payments_responsible_employee", blank=True, null=True)
