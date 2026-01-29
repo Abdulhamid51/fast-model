@@ -50,7 +50,7 @@ class Company(BaseModel):
     product_character2_name = models.CharField(max_length=300, default="Character 2")
     product_character3_name = models.CharField(max_length=300, default="Character 3")
     work_product_with_batch_number = models.BooleanField(default=False)
-    impact_sources = models.ManyToManyField('fast_model.PaymentSource', related_name='active_companies')
+    sources_impact_product_price = models.ManyToManyField('fast_model.PaymentSource', related_name='active_companies')
 
     def __str__(self):
         return self.name

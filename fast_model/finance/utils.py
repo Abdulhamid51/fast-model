@@ -117,3 +117,19 @@ def add_payment_for_person(person, cash, amount, payment_type, currency, currenc
     person_account.save()
     cash.save()
     return payment
+
+@transaction.atomic
+def add_payment_for_source(cash, amount, payment_type, currency, currency_value, payment_source, description):
+    if payment_type != payment_source.source_type:
+        raise ValueError("Payment type and source type must be the same")
+    payment = Payment.objects.create(cash=cash, amount=amount, payment_type=payment_type, currency=currency, currency_value=currency_value, payment_source=payment_source, description=description)
+    if payment_type == "in":
+        payment.cash_old = cash.amount
+        cash.amount += amount
+        payment.cash_new = cash.amount
+    else:
+        payment.cash_old = cash.amount
+        cash.amount -= amount
+        payment.cash_new = cash.amount
+    cash.save()
+    return payment
