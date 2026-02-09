@@ -127,21 +127,21 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('user_type', 'company', 'is_active')
     search_fields = ('username', 'email')
 
-    fieldsets = UserAdmin.fieldsets + (
+    fieldsets = list(UserAdmin.fieldsets) + [
         ('Additional info', {
             'fields': (
                 'user_type', 'description', 'address', 'phone', 'phone2',
                 'longitude', 'latitude', 'permission_group', 'company'
             )
         }),
-    )
+    ]
 
-    add_fieldsets = UserAdmin.add_fieldsets + (
+    add_fieldsets = list(UserAdmin.add_fieldsets) + [
         ('Additional info', {
             'classes': ('wide',),
             'fields': ('user_type', 'permission_group', 'company'),
         }),
-    )
+    ]
 # Character models (minimal admin)
 admin.site.register(ProductCharacter1)
 admin.site.register(ProductCharacter2)

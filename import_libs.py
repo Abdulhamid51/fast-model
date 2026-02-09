@@ -2,10 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, User
 import math
 import decimal
-try:
-    import numpy as np
-except Exception:
-    np = None
+import numpy as np
 from django.db.models import Sum, Avg, Max, Min, StdDev, Variance
 from django.db.models.functions import Round, Floor, Ceil, Abs, Power, Sqrt
 from django.utils.translation import gettext_lazy as _
